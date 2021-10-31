@@ -11,3 +11,23 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.rojo{
+  color: red;
+}
+
+.color{
+  color: blue;
+}
+
+form > a {
+  margin-left: 1rem;
+}
+
+.pointer{
+  cursor: pointer;
+}
+
+.table a{
+  margin-right: 1rem;
+}
