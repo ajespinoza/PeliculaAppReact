@@ -4,7 +4,6 @@ import ListadoPeliculas from "./peliculas/ListadoPeliculas";
 import { landingPageDTO } from "./peliculas/peliculas.model";
 import { urlPeliculas } from "./utils/endpoints";
 import AlertaContext from "./utils/AlertaContext";
-import Autorizado from "./auth/Autorizado";
 
 export default function LandingPage(){
 
@@ -23,11 +22,6 @@ export default function LandingPage(){
 
      return (
           <>
-               <Autorizado
-                    autorizado = {<>Estás autorizado</>}
-                    noAutorizado = {<>No estás autorizado</>}
-                    role="admin"
-               />
                <AlertaContext.Provider value={() => cargarDatos()}>
                     <h3>En Cartelera</h3>
                     <ListadoPeliculas peliculas={peliculas.enCines}/>

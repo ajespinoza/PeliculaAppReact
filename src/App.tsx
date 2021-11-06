@@ -5,17 +5,21 @@ import Menu from './utils/Menu';
 import rutas from './route-config';
 import configurarValidaciones from './Validaciones';
 import AutenticacionContext from './auth/AutenticacionContext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { claim } from './auth/auth.model';
+import { obtenerClaims } from './auth/manejadorJWT';
+import { configurarInterceptor } from './utils/Interceptores';
 
 configurarValidaciones();
+configurarInterceptor();
 
 function App() {
 
-  const [claims, setClaims] = useState<claim[]>([
-    {nombre: 'email', valor: 'felipe@mail.com'},
-    /* {nombre: 'role', valor: 'admin'} */
-  ]);
+  const [claims, setClaims] = useState<claim[]>([]);
+
+  useEffect(() => {
+    setClaims(obtenerClaims());
+  },[])
 
   function actualizar(claims: claim[]){
     setClaims(claims);

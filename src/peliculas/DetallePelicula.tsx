@@ -2,10 +2,12 @@ import axios, { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Link, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 import Cargando from "../utils/Cargando";
 import { coordenadaDTO } from "../utils/coordenadas.model";
-import { urlPeliculas } from "../utils/endpoints";
+import { urlPeliculas, urlRatings } from "../utils/endpoints";
 import Mapa from "../utils/Mapa";
+import Rating from "../utils/Rating";
 import { peliculaDTO } from "./peliculas.model";
 
 export default function DetallePelicula(){
@@ -17,6 +19,7 @@ export default function DetallePelicula(){
                .then((respuesta: AxiosResponse<peliculaDTO>) => {
                     respuesta.data.fechaLanzamiento = new Date(respuesta.data.fechaLanzamiento);
                     setPelicula(respuesta.data);
+                    console.log(respuesta.data);
                })
      }, [id])
      
@@ -44,6 +47,11 @@ export default function DetallePelicula(){
 
           return `https://www.youtube.com/embed/${video_id}`;
      }
+     
+     async function onVote(voto: number){
+          await axios.post(urlRatings, {puntuacion: voto, peliculaId: id})
+          Swal.fire({icon: "success", title: "Voto recibido"});
+     }
 
      return (
           pelicula ? <div style={{display: 'flex'}}>
@@ -56,6 +64,8 @@ export default function DetallePelicula(){
                                         >{genero.nombre}</Link>
                               )}
                               | {pelicula.fechaLanzamiento.toDateString()}
+                              | Voto promedio: {pelicula.promedioVoto!}
+                              | Tu voto: <Rating maximoValor={5} valorSeleccionado={pelicula.votoUsuario!} onChange={onVote}/>
 
                               <div style={{display: 'flex', marginTop: '1rem'}}>
                                    <span style={{display: 'inline-block', marginRight: '1rem'}}>
